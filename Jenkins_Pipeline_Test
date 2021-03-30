@@ -1,0 +1,55 @@
+pipeline {
+    agent{
+        label 'master'
+    }
+      tools {
+          maven 'Maven3'
+          jdk 'Java1.8'
+      }
+      stages {
+          stage ('code Checkout') {
+              steps{
+                  git credentialsId: 'learn',branch: 'master', url: 'https://github.com/learncode789/addressbook.git'
+              }
+          }
+      
+      stage('Code Validate'){
+          steps { 
+              script{
+                  sh """
+                  mvn validate
+                  """
+              }
+              }
+                        }
+  
+      stage('Code Compile'){
+          steps { 
+              script{
+                  sh """
+                  mvn compile
+                  """
+              }
+              }
+      }
+       stage('Code test'){
+          steps { 
+              script{
+                  sh """
+                  mvn test
+                  """
+              }
+              }
+      }
+       stage(' Package'){
+          steps { 
+              script{
+                  sh """
+                  mvn package
+                  """
+              }
+              }
+      }
+        }
+}
+     
